@@ -1,0 +1,2558 @@
+{
+  "info": {
+    "_postman_id": "d9b6d3a1-d900-424e-b6e5-36726c6488f0",
+    "name": "Hunter API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Domain",
+      "item": [
+        {
+          "name": "Search",
+          "item": [
+            {
+              "name": "Domain Search",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "059ec0d7-eb0b-4803-a204-78513609774a",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Valid structure request\", function () {",
+                      "    pm.response.to.be.an(\"object\");",
+                      "});",
+                      "",
+                      "pm.test(\"Valid structure data\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data).to.have.keys(\"domain\", \"disposable\", \"webmail\", \"accept_all\", \"pattern\", \"organization\", \"country\", \"state\", \"emails\");",
+                      "});",
+                      "",
+                      "pm.test(\"Valid structure meta\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.meta).to.have.keys(\"results\", \"limit\", \"offset\", \"params\");",
+                      "});",
+                      "",
+                      "pm.test(\"Valid structure emails\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.emails[0]).to.have.keys(\"value\", \"type\", \"confidence\", \"sources\", \"first_name\", \"last_name\", \"position\", \"seniority\", \"department\", \"linkedin\", \"twitter\", \"phone_number\", \"verification\");",
+                      "});",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "a700222e-028b-4c66-ba5a-a5892c1d9887",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/domain-search?domain={{domain}}&api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "domain-search"
+                  ],
+                  "query": [
+                    {
+                      "key": "domain",
+                      "value": "{{domain}}"
+                    },
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "5734b8cf-2842-46a1-a057-1d6028e04df4",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "4dad2423-b446-4977-978c-2df3ad0ae317",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "c839f87c-7028-4433-bb22-8091ea4b0893",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "8aa2282c-a924-4f89-8788-541b90121a92",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "01adb037-755c-43c4-bb58-de3c4f6ccafa",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "cf16d207-a46f-4af5-9a38-4cadeb6183e9",
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Email",
+      "item": [
+        {
+          "name": "Finder",
+          "item": [
+            {
+              "name": "Email Finder",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "3e129a3f-2dcc-461a-b1f7-307723694b71",
+                    "exec": [
+                      "pm.variables.set(\"first_name\", \"Adam\");",
+                      "pm.variables.set(\"last_name\", \"Risman\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "d86a3d71-73b6-4b90-9e2e-235f5562b492",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Adam's valid data\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.first_name).to.eql(\"Adam\");",
+                      "    pm.expect(jsonData.data.last_name).to.eql(\"Risman\");",
+                      "    pm.expect(jsonData.data.email).to.eql(\"adam.risman@intercom.io\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "5d9d86f8-0944-4762-b959-3d90d3d26374",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/email-finder?domain={{domain}}&first_name={{first_name}}&last_name={{last_name}}&api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "email-finder"
+                  ],
+                  "query": [
+                    {
+                      "key": "domain",
+                      "value": "{{domain}}"
+                    },
+                    {
+                      "key": "first_name",
+                      "value": "{{first_name}}"
+                    },
+                    {
+                      "key": "last_name",
+                      "value": "{{last_name}}"
+                    },
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "f27b04c6-783c-484f-8b64-9ef1f1e9cce4",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Verifier",
+          "item": [
+            {
+              "name": "Email Verifier",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "6454372b-a1cb-4f40-a3bf-e6e64d5b462d",
+                    "exec": [
+                      "pm.variables.set(\"email\", \"adam.risman@intercom.io\");",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "d0baeb73-6eeb-4049-b24f-83c5d0883eb3",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Valid structure data\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data).to.be.an(\"object\");",
+                      "});",
+                      "",
+                      "pm.test(\"Adam's valid data\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.email).to.eql(\"adam.risman@intercom.io\");",
+                      "});",
+                      "",
+                      "pm.test(\"validate sent email\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.meta.params.email).to.eql(\"adam.risman@intercom.io\");",
+                      "});",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "e7419cd5-6987-495f-a94b-bcf06ea8f5e8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/email-verifier?email={{email}}&api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "email-verifier"
+                  ],
+                  "query": [
+                    {
+                      "key": "email",
+                      "value": "{{email}}"
+                    },
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "c93c78cb-cd26-4fba-b2e3-51570a58a88c",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Count",
+          "item": [
+            {
+              "name": "Email Count",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "8c056c58-6e94-492b-83ef-732c691c234d",
+                    "exec": [
+                      "pm.test(\"Status code is 200\", function () {",
+                      "    pm.response.to.have.status(200);",
+                      "});",
+                      "",
+                      "pm.test(\"Content-Type is present\", function () {",
+                      "    pm.response.to.have.header(\"Content-Type\");",
+                      "});",
+                      "",
+                      "pm.test(\"Response time is less than 200ms\", function () {",
+                      "    pm.expect(pm.response.responseTime).to.be.below(400);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "f5b9d033-6c1a-4a28-a147-8aefe4084891",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/email-count?domain={{domain}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "email-count"
+                  ],
+                  "query": [
+                    {
+                      "key": "domain",
+                      "value": "{{domain}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "73fdc10d-7acd-4eea-80a5-6c2cab802927",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "e391fad5-ef10-4064-b300-b709704d89c8"
+    },
+    {
+      "name": "Author",
+      "item": [
+        {
+          "name": "Finder",
+          "item": [
+            {
+              "name": "Author Finder",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "69171f9e-0df8-44db-a791-68837839fb25",
+                    "exec": [
+                      "pm.variables.set(\"url\", \"https://hunter.io/blog/how-to-know-if-someone-read-your-email\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4cf6d318-6ea7-43fa-98ba-67673f778b0b",
+                    "exec": [
+                      "pm.test(\"Irina's valid data\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.first_name).to.eql(\"Irina\");",
+                      "    pm.expect(jsonData.data.last_name).to.eql(\"Maltseva\");",
+                      "    pm.expect(jsonData.data.email).to.eql(\"irina@hunter.io\");",
+                      "    pm.expect(jsonData.data.domain).to.eql(\"hunter.io\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "af125c03-4c3c-49d9-bec5-402aa7adfaee",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/author-finder?url={{url}}&api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "author-finder"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "{{url}}"
+                    },
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "a6440a71-c306-4302-a91c-f7fec805f4ce",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "0ecdea70-ef5c-4d3b-8ae7-912aaf3c9449"
+    },
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Information",
+          "item": [
+            {
+              "name": "Account Information",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "a59c0903-4b77-4bb1-b33b-afc0818c1b8d",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "5443e14d-c5e2-4ef6-a260-efecf3e075ab",
+                    "exec": [
+                      "pm.test(\"Account information\", function () {",
+                      "    const jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.first_name).to.eql(\"Kauan\");",
+                      "    pm.expect(jsonData.data.last_name).to.eql(\"Henrique\");",
+                      "    pm.expect(jsonData.data.email).to.eql(\"khds2013@gmail.com\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "d4e62cab-0819-47fb-afd3-f2bdff2e415f",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/account?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "account"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "2d613f0b-ec92-422a-8d12-dc307c585d87",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "c6eb2f43-f4cf-4b96-b45b-2ec76afdbe8d"
+    },
+    {
+      "name": "Leads",
+      "item": [
+        {
+          "name": "Create",
+          "item": [
+            {
+              "name": "Success create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "f685514e-4c2e-44fa-a78e-01553b1dfda3",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "let jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Created success\", function () {",
+                      "    pm.expect(jsonData.data.first_name).to.eql(\"Kauan\");",
+                      "    pm.expect(jsonData.data.last_name).to.eql(\"Henrique\");",
+                      "    pm.expect(jsonData.data.email).to.eql(\"kauan.henrique@wecares.com\");",
+                      "    pm.expect(jsonData.data.website).to.eql(\"wecares.com.br\");",
+                      "});",
+                      "",
+                      "let id = jsonData.data.id;",
+                      "pm.collectionVariables.set(\"id_lead\", id);",
+                      "",
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "e22f43cd-9a7a-4e54-aa6a-f8da5d3d3e81",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"kauan.henrique@wecares.com\",\n    \"first_name\": \"Kauan\",\n    \"last_name\": \"Henrique\",\n    \"position\": \"Cofounder\",\n    \"company\": \"WeCares\",\n    \"company_industry\": \"Personal Care\",\n    \"company_size\": \"1-50 employees\",\n    \"confidence_score\": 17,\n    \"website\": \"wecares.com.br\",\n    \"custom_attributes\": {\n        \"customer_id\": \"\"\n    }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads/?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "37b4d6ca-7557-40f7-b794-72ccd505c524",
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      "",
+                      "pm.test(\"Creation failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"empty_required_field\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(422);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"The email address is required.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "0def5b45-cf04-4ead-ace3-4548e7b4febc",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads/?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ""
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "9f6424e8-6827-4490-bf1a-d8d9b2715f42",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Update",
+          "item": [
+            {
+              "name": "Success update",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "00592558-8a46-4db4-8a75-d657b52bb277",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "04fdce8c-820f-4915-ba79-e5f009c2e4a0",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "1f93bd5b-b9cf-4f4b-b075-c642cf4c67a0",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"abobora@wecares.com\",\n    \"first_name\": \"Abobora\",\n    \"last_name\": \"Cabotian\",\n    \"position\": \"Founder\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_lead}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail update",
+              "event": [
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "dced1a98-8dc3-4561-bed3-f92dbd51ef20",
+                    "exec": [
+                      ""
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a948f2d9-eb15-4a12-a1f2-19abb939bfeb",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      "",
+                      "pm.test(\"Update falied\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"not_found\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(404);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"This lead does not exist.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "bd16f6f8-4e79-46cd-9dcd-a3b44b2c23ab",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"email\": \"abobora@wecares.com\",\n    \"first_name\": \"Abobora\",\n    \"last_name\": \"Cabotian\",\n    \"position\": \"Founder\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "cbde6a58-b5fd-4791-8cd5-ef87cd064a77",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Get",
+          "item": [
+            {
+              "name": "List",
+              "item": [
+                {
+                  "name": "List all your leads",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "9bba2a56-944e-4405-b062-17823cb7d78c",
+                        "exec": [
+                          "let jsonData = pm.response.json();",
+                          "",
+                          "pm.test(\"Data validad\", function () {",
+                          "    pm.expect(jsonData.data.leads[0].first_name).to.eql(\"Abobora\");",
+                          "    pm.expect(jsonData.data.leads[0].last_name).to.eql(\"Cabotian\");",
+                          "    pm.expect(jsonData.data.leads[0].email).to.eql(\"abobora@wecares.com\");",
+                          "    pm.expect(jsonData.data.leads[0].position).to.eql(\"Founder\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "948f996e-0ba0-468c-b3fb-801ef69ea7f5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "0ede27bc-de6b-4e84-aa6c-893edaf17774",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "Retrieves",
+              "item": [
+                {
+                  "name": "Get a lead",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "fbb3fb3d-4193-486c-9669-21467cbc2526",
+                        "exec": [
+                          "let jsonData = pm.response.json();",
+                          "",
+                          "pm.test(\"Data validad\", function () {",
+                          "    pm.expect(jsonData.data.first_name).to.eql(\"Abobora\");",
+                          "    pm.expect(jsonData.data.last_name).to.eql(\"Cabotian\");",
+                          "    pm.expect(jsonData.data.email).to.eql(\"abobora@wecares.com\");",
+                          "    pm.expect(jsonData.data.position).to.eql(\"Founder\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "4cb9c24f-0d07-4411-89de-143a2ca9a0f2",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads/:id?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "{{id_lead}}",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "9bc5528f-fe2a-49f2-b408-37c26cc13aaf",
+              "_postman_isSubFolder": true
+            }
+          ],
+          "_postman_id": "6842dc67-8d4f-41d2-b358-5b140b82fba9",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "58dbc856-e266-46d4-b2f5-4113d67a55ee",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "d50d94e8-3c95-4d33-9034-46aef5e8e391",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Success delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "b9ae3aa7-6553-44ed-b2bf-245f6a1795c0",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "7312816c-5a49-45d5-b7cc-b324923a7163",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_lead}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a1a96cc4-0019-49ec-a857-17ac64e328cc",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      "",
+                      "pm.test(\"Deletion failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"not_found\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(404);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"This lead does not exist.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "f0b9419c-79d5-4327-871a-c7b48541cae5",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "11ac75f3-3cf6-4f11-948b-4855368d5e5e",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "f075944d-8a7e-4adc-82b9-0dc6e386ac2f"
+    },
+    {
+      "name": "Custom Attributes",
+      "item": [
+        {
+          "name": "Create",
+          "item": [
+            {
+              "name": "Success Create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "ca1a396f-02f2-4218-b711-240dae845c3b",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "let jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Created success\", function () {",
+                      "    pm.expect(jsonData.data.id).to.have;",
+                      "    pm.expect(jsonData.data.label).to.eql(\"Hajime no Ippo\");",
+                      "    pm.expect(jsonData.data.slug).to.eql(\"hajime_no_ippo\");",
+                      "});",
+                      "",
+                      "let id = jsonData.data.id;",
+                      "pm.collectionVariables.set(\"id_custom_attributes\", id);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "71ee4464-77f6-4ec5-bf67-08412e063e19",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"Hajime no Ippo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "babb5954-a79d-4266-a3ed-e315107e7e99",
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      "",
+                      "pm.test(\"Creation failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"validation_failed\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(422);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"Label can't be blank\");",
+                      "    pm.expect(jsonData.errors[1].id).to.eql(\"validation_failed\");",
+                      "    pm.expect(jsonData.errors[1].code).to.eql(422);",
+                      "    pm.expect(jsonData.errors[1].details).to.eql(\"Label is too short (minimum is 2 characters)\");",
+                      "    pm.expect(jsonData.errors[2].id).to.eql(\"validation_failed\");",
+                      "    pm.expect(jsonData.errors[2].code).to.eql(422);",
+                      "    pm.expect(jsonData.errors[2].details).to.eql(\"Slug can't be blank\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "6bbad44f-3d61-4791-9e91-51cf5d91e423",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "17ca92f2-26c6-45f7-913d-fc09ddcedbfb",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Update",
+          "item": [
+            {
+              "name": "Success update",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "01817cfd-f5c7-4901-9fe2-e9b5f86a5b35",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "cdc2ea1d-fc8a-4119-8643-2cbbe63bfeec",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"Ashita no Joe\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_custom_attributes}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail update",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "2e3280a2-ff05-4f03-a69d-6623ee4cdbc1",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      "",
+                      "pm.test(\"Update falied\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"not_found\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(404);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"This leads custom attribute does not exist.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "30f96b5c-ff45-45aa-bcaa-7bbde90d4999",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"label\": \"Ashita no Joe\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "6fb177c2-22e0-4755-bcd3-4f8645e78549",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Get",
+          "item": [
+            {
+              "name": "List",
+              "item": [
+                {
+                  "name": "List all your custom attributes",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "4001676b-3026-4782-8922-e2e04ed9c393",
+                        "exec": [
+                          "pm.test(\"Data validad\", function () {",
+                          "    let jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.data.leads_custom_attributes[0].label).to.eql(\"Ashita no Joe\");",
+                          "    pm.expect(jsonData.data.leads_custom_attributes[0].slug).to.eql(\"hajime_no_ippo\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "2c3484f8-b073-42c8-92ad-e09a5573eeba",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads_custom_attributes?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads_custom_attributes"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "ccd6591d-6bbc-49bf-b1f6-1986726e8ef4",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "Retrieves",
+              "item": [
+                {
+                  "name": "Get a custom attribute",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "13dc11ef-3afd-45d8-b247-0d7710fcc852",
+                        "exec": [
+                          "pm.test(\"Data validad\", function () {",
+                          "    let jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.data.label).to.eql(\"Ashita no Joe\");",
+                          "    pm.expect(jsonData.data.slug).to.eql(\"hajime_no_ippo\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "4cf2f2eb-360a-487b-8d0e-6cc4207eb906",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads_custom_attributes/:id?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads_custom_attributes",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "{{id_custom_attributes}}",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "2796f53f-57b8-4f55-831a-3cb6fca9ff6b",
+              "_postman_isSubFolder": true
+            }
+          ],
+          "_postman_id": "feda4963-bc3e-4219-938f-17078311ec50",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "2ac551a4-b2e8-450b-99be-4dfcc7546150",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "b62533c5-65b0-4168-8bbf-0c9c68593e41",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Success delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "c7d9ee06-9ec5-4d73-adb3-1dad487f736b",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "56e1ba48-f774-4088-96b9-574dc90eae1b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_custom_attributes}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "e6205c20-e699-400a-a371-09fb498d4a5e",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      "",
+                      "pm.test(\"Deletion failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"not_found\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(404);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"This leads custom attribute does not exist.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "b3577d3e-a77a-40d7-9940-4812c739da4a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads_custom_attributes/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_custom_attributes",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "74999e48-0092-497e-83a2-b3bc12550fa7",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "4163796c-2b77-4fbf-b45b-93ecb42c0fe7"
+    },
+    {
+      "name": "Leads Lists",
+      "item": [
+        {
+          "name": "Create",
+          "item": [
+            {
+              "name": "Success create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "fd9425b2-cfb9-4214-b954-17c1f1f8c4e0",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "let jsonData = pm.response.json();",
+                      "",
+                      "pm.test(\"Created success\", function () {",
+                      "    pm.expect(jsonData.data.name).to.eql(\"Samba\");",
+                      "});",
+                      "",
+                      "let id = jsonData.data.list_id;",
+                      "pm.collectionVariables.set(\"id_list\", id);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "052f987d-b7d8-424f-b126-4e92144d3495",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Samba\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_lists?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "fba5a85f-52d5-4895-ac84-680d86b0f7f8",
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(422);",
+                      "});",
+                      "",
+                      "pm.test(\"Creation failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"duplicated_entry\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(422);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"A list with the same name already exists.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "9f3a9904-6dda-4e8b-a09a-129b02cc963b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_lists?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "94de3e15-6aa5-4c68-8587-1900d400ed87",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Update",
+          "item": [
+            {
+              "name": "Success update",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "06281305-75d6-4c6c-b290-3a7784c46abb",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "c9eb113b-9214-451f-813b-a7c4d03533ca",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sertanejo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_lists/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_list}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail update",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "687edc2d-e268-4f74-b756-ad7c26d2c6b7",
+                    "exec": [
+                      "pm.test(\"Status code is 404\", function () {",
+                      "    pm.response.to.have.status(404);",
+                      "});",
+                      "",
+                      "pm.test(\"Update falied\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"not_found\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(404);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"This leads list does not exist.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "ab4c19b0-c361-4fc3-b69c-52f1593dbe9a",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Sertanejo\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/leads_lists/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "ec4a41f6-fd4b-41d7-b222-921782af8a3c",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Get",
+          "item": [
+            {
+              "name": "List",
+              "item": [
+                {
+                  "name": "List all your leads lists",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "ae659f30-15e2-4375-9758-f2e8ad0838cb",
+                        "exec": [
+                          "pm.test(\"Data validad\", function () {",
+                          "    let jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.data.leads_lists[0].name).to.eql(\"Sertanejo\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "ed60b13b-9680-4716-8cb9-90c02ddcd6c0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads_lists?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads_lists"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "53eed528-2aee-4ef6-a883-9ab357580c5e",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "Retrieves",
+              "item": [
+                {
+                  "name": "Get a leads list",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "27cd2b3e-7bca-4b9d-8929-cf13a8133d22",
+                        "exec": [
+                          "pm.test(\"Data validad\", function () {",
+                          "    let jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.data.name).to.eql(\"Sertanejo\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "4ee3ae16-55c2-4958-b8f6-3afb6a457f3d",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/leads_lists/:id?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "leads_lists",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "{{id_list}}",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "17a9e46e-94fd-42c7-a7c6-482ae8eba4f7",
+              "_postman_isSubFolder": true
+            }
+          ],
+          "_postman_id": "cd99068b-f09d-4d49-b66a-3a7b2e3d2f63",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "547c6ab8-0782-4637-83c9-b7f33e10ea41",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "fe25cc81-a572-4e69-924f-e5c14f11f3e3",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Success delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "4debf9e3-fdc4-4cfd-b533-031dca04bfa3",
+                    "exec": [
+                      "pm.test(\"Status code is 204\", function () {",
+                      "    pm.response.to.have.status(204);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "235f25f5-247e-4750-b6ee-30553e1a39f8",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads_lists/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "{{id_list}}",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "7a86e0d5-b9a6-4aa4-83a9-09a29c9e01fa",
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});",
+                      "",
+                      "pm.test(\"Deletion failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"must_have_at_least_one_list\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(400);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"You must own at least one list of leads on your account. Please create a new list before deleting it.\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "dd81c41f-47d6-4e30-944c-86abacc7df89",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/leads_lists/:id?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "leads_lists",
+                    ":id"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "0",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "1f33abd9-ebcc-4aea-a02f-18116e0fd195",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "f83dd2d3-d52e-4710-85fb-a2d44b923784"
+    },
+    {
+      "name": "Campaigns",
+      "item": [
+        {
+          "name": "Create",
+          "item": [
+            {
+              "name": "Success create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "1f81888b-811d-46a8-ac06-82743f33efd3",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "let jsonData = pm.response.json();",
+                      "let email01 = jsonData.meta.params.emails[0];",
+                      "pm.collectionVariables.set(\"email01\", email01);"
+                    ],
+                    "type": "text/javascript"
+                  }
+                },
+                {
+                  "listen": "prerequest",
+                  "script": {
+                    "id": "d832da48-0dc8-483b-ba62-a282d051f06e",
+                    "exec": [
+                      "pm.iterationData.get(\"emails\");"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "dcddc05d-168c-4504-b9f0-49536630cdcf",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": " {\n    \"emails\": \"{{emails}}\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/campaigns/:id/recipients?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "campaigns",
+                    ":id",
+                    "recipients"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "205002",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail create",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "50afb4cc-f03c-4f86-9bd6-dd9cc4140424",
+                    "exec": [
+                      "pm.test(\"Status code is 422\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});",
+                      "",
+                      "pm.test(\"Creation failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"wrong_params\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(400);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"You are missing the emails parameter\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "177e1ecf-cc73-43ab-bc16-3553385bc21b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/campaigns/:id/recipients?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "campaigns",
+                    ":id",
+                    "recipients"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "205002",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "4c0485c7-8157-412f-ae9a-03877de5ca80",
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Get",
+          "item": [
+            {
+              "name": "Compaigns",
+              "item": [
+                {
+                  "name": "List all your campaigns",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "dfdff064-9cf0-498e-961c-cdba1734fc76",
+                        "exec": [
+                          "pm.test(\"Data validad\", function () {",
+                          "    let jsonData = pm.response.json();",
+                          "    pm.expect(jsonData.data.campaigns[0].id).to.eql(205002);",
+                          "    pm.expect(jsonData.data.campaigns[0].name).to.eql(\"Teste\");",
+                          "    pm.expect(jsonData.data.campaigns[0].owner.id).to.eql(3093695);",
+                          "    pm.expect(jsonData.data.campaigns[0].owner.email).to.eql(\"khds2013@gmail.com\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "65b19334-301d-4ea1-b7c3-1a58c6146cc4",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/campaigns?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "campaigns"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "097ede0e-3b72-4ca0-8e3f-64204a155c00",
+              "_postman_isSubFolder": true
+            },
+            {
+              "name": "Recipients of a campaign",
+              "item": [
+                {
+                  "name": "List the recipients of a campaign",
+                  "event": [
+                    {
+                      "listen": "test",
+                      "script": {
+                        "id": "e66c5913-fcea-466f-b80b-d0df6cbab5e3",
+                        "exec": [
+                          "pm.test(\"Body matches string\", function () {",
+                          "    pm.expect(pm.response.text()).to.include(\"pagode@wecares.com.br\");",
+                          "});"
+                        ],
+                        "type": "text/javascript"
+                      }
+                    }
+                  ],
+                  "_postman_id": "9be1259f-3b4e-46a2-93d5-8f0f9641fef5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [],
+                    "url": {
+                      "raw": "{{base_url}}/campaigns/:id/recipients?api_key={{api_key}}",
+                      "host": [
+                        "{{base_url}}"
+                      ],
+                      "path": [
+                        "campaigns",
+                        ":id",
+                        "recipients"
+                      ],
+                      "query": [
+                        {
+                          "key": "api_key",
+                          "value": "{{api_key}}"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "key": "id",
+                          "value": "205002",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "response": []
+                }
+              ],
+              "_postman_id": "f8982787-8b21-420f-a44a-32ea6d924625",
+              "_postman_isSubFolder": true
+            }
+          ],
+          "_postman_id": "884fe6fe-7067-4159-b0be-ad5ecd34a580",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "54c973f0-c0be-4715-983b-a5afa702b2cd",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "9cda3fec-b8f9-40c4-b235-a6a9fd3dd702",
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
+        },
+        {
+          "name": "Delete",
+          "item": [
+            {
+              "name": "Success delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "a2cf0ec5-4525-45cb-b1b4-959447e4610a",
+                    "exec": [
+                      "pm.test(\"Status code is 201\", function () {",
+                      "    pm.response.to.have.status(201);",
+                      "});",
+                      "",
+                      "pm.test(\"Delete success\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.data.recipients_canceled[0]).to.eql(jsonData.meta.params.emails[0]);",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "7a65db48-ff40-498c-be3e-a69d26456e14",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"emails\": [\"\"]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/campaigns/:id/recipients?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "campaigns",
+                    ":id",
+                    "recipients"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "205002",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Fail delete",
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "id": "ec4d2f7e-475c-4dda-bd88-5887f078b5dd",
+                    "exec": [
+                      "pm.test(\"Status code is 400\", function () {",
+                      "    pm.response.to.have.status(400);",
+                      "});",
+                      "",
+                      "pm.test(\"Deletion failed\", function () {",
+                      "    let jsonData = pm.response.json();",
+                      "    pm.expect(jsonData.errors[0].id).to.eql(\"wrong_params\");",
+                      "    pm.expect(jsonData.errors[0].code).to.eql(400);",
+                      "    pm.expect(jsonData.errors[0].details).to.eql(\"You are missing the emails parameter\");",
+                      "});"
+                    ],
+                    "type": "text/javascript"
+                  }
+                }
+              ],
+              "_postman_id": "cdfb6b9b-0165-4e57-98d6-e2a4aea0e5b1",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "DELETE",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{base_url}}/campaigns/:id/recipients?api_key={{api_key}}",
+                  "host": [
+                    "{{base_url}}"
+                  ],
+                  "path": [
+                    "campaigns",
+                    ":id",
+                    "recipients"
+                  ],
+                  "query": [
+                    {
+                      "key": "api_key",
+                      "value": "{{api_key}}"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "key": "id",
+                      "value": "205002",
+                      "type": "string"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            }
+          ],
+          "_postman_id": "7d631005-4d4b-442e-b01d-6b3c14e8618d",
+          "_postman_isSubFolder": true
+        }
+      ],
+      "_postman_id": "efa096a2-127f-4432-aa97-9f36ae88e4e7"
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "id": "ad2fa8f6-be1c-42b5-9ac5-7b5f92a2c7b3",
+        "type": "text/javascript",
+        "exec": [
+          "pm.collectionVariables.set(\"base_url\", \"https://api.hunter.io/v2\");",
+          "pm.collectionVariables.set(\"domain\", \"intercom.io\");",
+          "pm.collectionVariables.set(\"api_key\", \"6e3a7b039546ae7d5532b615bafe1656fb8082b1\");",
+          ""
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "id": "fd6a38f4-a16a-491d-af02-d66db7d900ac",
+        "type": "text/javascript",
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "id": "0c1038ad-0033-40c9-981e-aa0102115f7b",
+      "key": "base_url",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "da735367-2607-40d4-8b59-5b13bd0cb08b",
+      "key": "api_key",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "6e02dd99-37f4-4df5-ae87-e9726a27c97b",
+      "key": "domain",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "248a5f8c-075b-4400-80b9-634bf4cad7a4",
+      "key": "id_lead",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "9e7b459a-dc18-4751-8a39-c3df73696b8f",
+      "key": "id_custom_attributes",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "ca2849ba-5b14-4470-92ec-15220695267d",
+      "key": "id_list",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "id": "6b322e4f-5c64-4036-b0f3-9db97ddd12ff",
+      "key": "email01",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
